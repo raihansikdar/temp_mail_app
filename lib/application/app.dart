@@ -17,7 +17,6 @@ class TempMailApp extends StatelessWidget {
       title: 'Temp Mail App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         inputDecorationTheme: InputDecorationTheme(
               filled: true,
