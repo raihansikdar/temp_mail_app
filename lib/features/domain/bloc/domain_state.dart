@@ -26,7 +26,7 @@ class DomainDataLoadedState extends DomainState{
 
 class DomainErrorState extends DomainState{
   final String errorMessage;
-  DomainErrorState(this.errorMessage);
+  DomainErrorState({required this.errorMessage});
 
   @override
   List<Object?> get props => [errorMessage];

@@ -19,7 +19,7 @@ class DomainBloc extends Bloc<DomainEvent,DomainState>{
          domainModel = DomainModel.fromJson(response.body);
          emit(DomainDataLoadedState(domainModel));
        }else{
-         emit(DomainErrorState('Domain can\'t fetch'));
+         emit(DomainErrorState(errorMessage: 'Domain can\'t fetch'));
        }
     });
   }

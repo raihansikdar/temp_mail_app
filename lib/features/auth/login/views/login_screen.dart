@@ -6,8 +6,8 @@ import 'package:temp_mail_app/constants/custom_size_extension.dart';
 import 'package:temp_mail_app/features/auth/create_account/views/create_account_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
+  const LoginScreen({Key? key, required this.domainName}) : super(key: key);
+  final String domainName;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
                    ),
                  ),
                  SizedBox(width: 8.rSp,),
-                 Text('@domain.com'),
+                 Text("@${domainName}",style: TextStyle(fontSize: 24.rSp,fontWeight: FontWeight.w500),),
                ],
              ),
                 SizedBox(height: 16.rSp,),
@@ -62,7 +62,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(width: 8.rSp,),
                     GestureDetector(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateAccountScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateAccountScreen(domainName: domainName)));
                         },
                         child: Text('Create',style: TextStyle(fontWeight: FontWeight.bold),)),
                   ],

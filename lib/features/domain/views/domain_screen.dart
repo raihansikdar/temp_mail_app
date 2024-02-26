@@ -38,7 +38,7 @@ class DomainScreen extends StatelessWidget {
                     children: [
                       GestureDetector(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen(domainName: _domainState.domainModel.hydraMember?.first.domain ?? '')));
                           },
                           child: const Text('Tap to create account or login',style: TextStyle(color: AppColors.appBarColors,fontWeight: FontWeight.bold),)),
                       SizedBox(height: 16.rSp,),
