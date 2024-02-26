@@ -3,10 +3,9 @@ import 'package:temp_mail_app/common_widgets/body_header.dart';
 import 'package:temp_mail_app/common_widgets/custom_appbar.dart';
 import 'package:temp_mail_app/constants/app_colors.dart';
 import 'package:temp_mail_app/constants/custom_size_extension.dart';
-import 'package:temp_mail_app/features/auth/create_account/views/create_account_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class CreateAccountScreen extends StatelessWidget {
+  const CreateAccountScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class LoginScreen extends StatelessWidget {
       body:  Column(
         children: [
           const BodyHeader(
-            headerText: 'Login',
+            headerText: 'Create Email Account',
           ),
           SizedBox(height: 16.rSp,),
           Padding(
@@ -24,20 +23,20 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-             Row(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: [
-                 Expanded(
-                   child: TextFormField(
-                       decoration: const InputDecoration(
-                           hintText: 'Enter Email',
-                       )
-                   ),
-                 ),
-                 SizedBox(width: 8.rSp,),
-                 Text('@domain.com'),
-               ],
-             ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                          decoration: const InputDecoration(
+                            hintText: 'Enter Email',
+                          )
+                      ),
+                    ),
+                    SizedBox(width: 8.rSp,),
+                    Text('@domain.com'),
+                  ],
+                ),
                 SizedBox(height: 16.rSp,),
                 TextFormField(
                     decoration: const InputDecoration(
@@ -50,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.appBarColors
+                          backgroundColor: AppColors.appBarColors
                       ),
                       onPressed: (){}, child: Text('Login',style: TextStyle(color: AppColors.appBarTextColor),)),
                 ),
@@ -58,13 +57,13 @@ class LoginScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Can't have a account?"),
+                    Text("Already have a account?"),
                     SizedBox(width: 8.rSp,),
                     GestureDetector(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateAccountScreen()));
+                          Navigator.pop(context);
                         },
-                        child: Text('Create',style: TextStyle(fontWeight: FontWeight.bold),)),
+                        child: Text('Login',style: TextStyle(fontWeight: FontWeight.bold),)),
                   ],
                 )
               ],
