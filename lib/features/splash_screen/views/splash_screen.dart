@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void goNextPage()async{
     await AuthUtility.getAccessToken();
     Future.delayed(const Duration(seconds: 3)).then((value) {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> AuthUtility.isLoggedIn ? HomeScreen(domainName: 'domainName') : DomainScreen()), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> AuthUtility.isLoggedIn ? HomeScreen() : const DomainScreen()), (route) => false);
     });
   }
 

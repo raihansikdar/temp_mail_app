@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart';
 import 'package:temp_mail_app/services/network_response.dart';
+import 'package:temp_mail_app/utility/auth_utility.dart';
 
 class NetworkCaller{
   ///----------------------------------->> get request method <<----------------------------------
   static Future<NetworkResponse> getRequest(String url) async{
     try{
-      Response response = await get(Uri.parse(url),headers: {'Content-Type': 'application/json'});
+      Response response = await get(Uri.parse(url),headers: {'Content-Type': 'application/json','token': AuthUtility.accessToken.toString()});
 
       log("getRequest statusCode ==> ${response.statusCode}");
       log("getRequest body ==> ${response.body}");

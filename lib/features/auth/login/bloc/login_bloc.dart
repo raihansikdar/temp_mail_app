@@ -19,7 +19,6 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
       NetworkResponse response = await NetworkCaller.postRequest(Urls.tokenUrl, body);
       if(response.isSuccess){
         await AuthUtility.setAccessToken(token: response.body['token']);
-        print(response.body['token']);
         emit(const UserLoginSuccessState(successMessage: 'Login successful.'));
       }else{
         emit(const UserLoginFailedState(errorMessage: 'Login Failed.'));

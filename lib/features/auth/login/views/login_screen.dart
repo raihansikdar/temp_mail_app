@@ -102,8 +102,7 @@ class LoginScreen extends StatelessWidget {
                                 _addressTEController.clear();
                                 _passwordTEController.clear();
                                 AppToastMessage.successToast(text: state.successMessage);
-                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomeScreen(domainName: name,)), (route) => false);
-                                //Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen(domainName: name)));
+                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomeScreen()), (route) => false);
                               }else if(state is UserLoginFailedState){
                                 AppToastMessage.failedToast(text: state.errorMessage);
                               }

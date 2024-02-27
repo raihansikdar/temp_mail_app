@@ -5,6 +5,7 @@ import 'package:temp_mail_app/common_bloc/password_visibility_bloc.dart';
 import 'package:temp_mail_app/features/auth/create_account/bloc/create_account_bloc.dart';
 import 'package:temp_mail_app/features/auth/login/bloc/login_bloc.dart';
 import 'package:temp_mail_app/features/domain/bloc/domain_bloc.dart';
+import 'package:temp_mail_app/features/home/bloc/message_bloc.dart';
 
 void main() {
   runApp(
@@ -13,6 +14,7 @@ void main() {
       BlocProvider(create: (_)=> CreateAccountBloc()),
       BlocProvider(create: (_)=> PasswordVisibilityBloc()),
       BlocProvider(create: (_)=> LoginBloc()),
+      BlocProvider(create: (_)=> MessageBloc()),
     ], child: const TempMailApp())
   );
 }
