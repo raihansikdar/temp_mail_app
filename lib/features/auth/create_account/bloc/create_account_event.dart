@@ -8,7 +8,7 @@ class SignUpEvent extends CreateAccountEvent {
   final String address;
   final String password;
 
-  SignUpEvent({required this.address, required this.password});
+  const SignUpEvent({required this.address, required this.password});
 
   @override
   List<Object> get props => [address, password];

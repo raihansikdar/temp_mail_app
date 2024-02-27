@@ -16,7 +16,7 @@ class SignUpLoadingState extends CreateAccountState {
 
 class SignUpSuccessState extends CreateAccountState {
   final String successMessage;
-  SignUpSuccessState({required this.successMessage});
+  const SignUpSuccessState({required this.successMessage});
   @override
   List<Object> get props => [successMessage];
 }
@@ -24,7 +24,7 @@ class SignUpSuccessState extends CreateAccountState {
 class SignUpFailedState extends CreateAccountState {
   final String errorMessage;
 
-  SignUpFailedState({required this.errorMessage});
+  const SignUpFailedState({required this.errorMessage});
 
   @override
   List<Object> get props => [errorMessage];

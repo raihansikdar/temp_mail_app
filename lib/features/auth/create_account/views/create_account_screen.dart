@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:temp_mail_app/common_bloc/password_visibility_bloc.dart';
+import 'package:temp_mail_app/common_bloc/password_visibility_event.dart';
+import 'package:temp_mail_app/common_bloc/password_visibility_state.dart';
 import 'package:temp_mail_app/common_widgets/body_header.dart';
 import 'package:temp_mail_app/common_widgets/custom_appbar.dart';
 import 'package:temp_mail_app/constants/app_colors.dart';
@@ -10,23 +13,15 @@ import 'package:temp_mail_app/features/auth/create_account/bloc/create_account_b
 import 'package:temp_mail_app/features/auth/create_account/bloc/create_account_event.dart';
 import 'package:temp_mail_app/features/auth/create_account/bloc/create_account_state.dart';
 
-class CreateAccountScreen extends StatefulWidget {
+class CreateAccountScreen extends StatelessWidget {
    CreateAccountScreen({Key? key, required this.domainName}) : super(key: key);
   final String domainName;
 
-  @override
-  State<CreateAccountScreen> createState() => _CreateAccountScreenState();
-}
-
-class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _addressTEController = TextEditingController();
 
   final TextEditingController _passwordTEController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  bool _visible = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +49,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             child: TextFormField(
                               controller: _addressTEController,
                                 decoration: const InputDecoration(
-                                  hintText: 'Enter Email',
+                                  hintText: 'Enter Address',
                                 ),
                               validator: (String? value){
                                 if(value?.isEmpty ?? true){
@@ -65,32 +60,32 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             ),
                           ),
                           SizedBox(width: 8.rSp,),
-                          Text("@${widget.domainName}",style: TextStyle(fontSize: 24.rSp,fontWeight: FontWeight.w500),),
+                          Text("@$domainName",style: TextStyle(fontSize: 24.rSp,fontWeight: FontWeight.w500),),
                         ],
                       ),
                       SizedBox(height: 16.rSp,),
                       TextFormField(
-                        obscureText: !_visible,
-                        controller: _passwordTEController,
-                          decoration: InputDecoration(
-                              hintText: 'Enter password',
-                              suffixIcon: GestureDetector(
-                                  onTap: (){
-                                    setState(() {
-                                      _visible = !_visible;
-                                    });
-                                  },
-                                  child: Icon(_visible ? Icons.visibility : Icons.visibility_off ))
+                            obscureText: !context.watch<PasswordVisibilityBloc>().visible,
+                            controller: _passwordTEController,
+                              decoration: InputDecoration(
+                                  hintText: 'Enter password',
+                                  suffixIcon: GestureDetector(
+                                      onTap: (){
+
+                                        context.read<PasswordVisibilityBloc>().add(PasswordVisibilityChangeEvent());
+                                      },
+                                      child: Icon(context.watch<PasswordVisibilityBloc>().visible ? Icons.visibility : Icons.visibility_off ))
+                              ),
+                            validator: (String? value){
+                              if(value?.isEmpty ?? true){
+                                return 'This field is mandatory';
+                              }else if(value!.length  < 5 ){
+                                return 'Password must be greater than 4 digit';
+                              }
+                              return null;
+                            },
                           ),
-                        validator: (String? value){
-                          if(value?.isEmpty ?? true){
-                            return 'This field is mandatory';
-                          }else if(value!.length  < 5 ){
-                            return 'Password must be greater than 4 digit';
-                          }
-                          return null;
-                        },
-                      ),
+
                       SizedBox(height: 32.rSp,),
                       SizedBox(
                         width: double.infinity,
@@ -102,7 +97,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               if(!_formKey.currentState!.validate()){
                                 return;
                               }else{
-                                context.read<CreateAccountBloc>().add(SignUpEvent(address: _addressTEController.text.trim()+"@${widget.domainName}", password: _passwordTEController.text.trim()));
+                                context.read<CreateAccountBloc>().add(SignUpEvent(address: _addressTEController.text.trim()+"@$domainName", password: _passwordTEController.text.trim()));
                                 context.read<CreateAccountBloc>().stream.listen((state) {
                                   if(state is SignUpSuccessState){
                                     _addressTEController.clear();
@@ -125,6 +120,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           GestureDetector(
                               onTap: (){
                                 Navigator.pop(context);
+                                _addressTEController.clear();
+                                _passwordTEController.clear();
+                                context.read<PasswordVisibilityBloc>().add(PasswordVisibilityChangeEvent());
                               },
                               child: const Text('Login',style: TextStyle(fontWeight: FontWeight.bold),)),
                         ],
