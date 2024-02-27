@@ -129,7 +129,6 @@ class LoginScreen extends StatelessWidget {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateAccountScreen(domainName: domainName)));
                             _addressTEController.clear();
                             _passwordTEController.clear();
-                            // context.read<PasswordVisibilityBloc>().add(PasswordVisibilityChangeEvent());
                           },
                           child: const Text('Create',style: TextStyle(fontWeight: FontWeight.bold),)),
                     ],

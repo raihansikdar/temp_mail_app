@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:temp_mail_app/common_bloc/password_visibility_bloc.dart';
 import 'package:temp_mail_app/common_bloc/password_visibility_event.dart';
 import 'package:temp_mail_app/common_bloc/password_visibility_state.dart';
@@ -137,7 +136,6 @@ class CreateAccountScreen extends StatelessWidget {
                                 _addressTEController.clear();
                                 _passwordTEController.clear();
                                 Navigator.pop(context);
-                                // context.read<PasswordVisibilityBloc>().add(PasswordVisibilityChangeEvent());
                               },
                               child: const Text('Login',style: TextStyle(fontWeight: FontWeight.bold),)),
                         ],

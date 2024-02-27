@@ -15,7 +15,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState()  {
-
     goNextPage();
     super.initState();
   }
@@ -30,18 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: Center(child: Image.asset(AssetsPath.logoPNG,fit: BoxFit.cover,)),
-      // body: Stack(
-      //   children: [
-      //     Center(child: Image.asset(AssetsPath.logoPNG,width: double.infinity,fit: BoxFit.cover,)),
-      //     // Positioned(
-      //     //     left: 0,
-      //     //     right: 0,
-      //     //     bottom: 20,
-      //     //     child: LoadingAnimationWidget.dotsTriangle(color: Colors.green, size: 30))
-      //   ],
-      // ),
+     body: Center(child: Image.asset(AssetsPath.logoPNG,fit: BoxFit.cover,)),
     );
   }
 }
