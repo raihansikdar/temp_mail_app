@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:temp_mail_app/constants/app_colors.dart';
+import 'package:temp_mail_app/features/domain/views/domain_screen.dart';
+import 'package:temp_mail_app/utility/auth_utility.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -25,7 +27,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: action == false ? null : [
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: Icon(Icons.logout,color: AppColors.appBarTextColor,),
+          child: GestureDetector(
+              onTap: ()async{
+                await AuthUtility.clearInfo();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const DomainScreen()), (route) => false);
+              },
+              child: const Icon(Icons.logout,color: AppColors.appBarTextColor,)),
         )
       ],
     );

@@ -5,6 +5,7 @@ import 'package:temp_mail_app/common_bloc/password_visibility_bloc.dart';
 import 'package:temp_mail_app/common_bloc/password_visibility_event.dart';
 import 'package:temp_mail_app/common_bloc/password_visibility_state.dart';
 import 'package:temp_mail_app/common_widgets/body_header.dart';
+import 'package:temp_mail_app/common_widgets/circular_inside_button_widget.dart';
 import 'package:temp_mail_app/common_widgets/custom_appbar.dart';
 import 'package:temp_mail_app/constants/app_colors.dart';
 import 'package:temp_mail_app/constants/app_toast_message.dart';
@@ -15,13 +16,13 @@ import 'package:temp_mail_app/features/auth/create_account/bloc/create_account_s
 
 class CreateAccountScreen extends StatelessWidget {
    CreateAccountScreen({Key? key, required this.domainName}) : super(key: key);
-  final String domainName;
+
+   final String domainName;
 
   final TextEditingController _addressTEController = TextEditingController();
-
   final TextEditingController _passwordTEController = TextEditingController();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,13 +104,26 @@ class CreateAccountScreen extends StatelessWidget {
                                     _addressTEController.clear();
                                     _passwordTEController.clear();
                                     AppToastMessage.successToast(text: state.successMessage);
+                                    Navigator.pop(context);
                                   }else if(state is SignUpFailedState){
                                     AppToastMessage.failedToast(text: state.errorMessage);
                                   }
                                 });
                               }
 
-                            }, child: const Text('Create',style: TextStyle(color: AppColors.appBarTextColor),)),
+                            }, child: BlocBuilder<CreateAccountBloc, CreateAccountState>(
+                          builder: (context, _createAccountState) {
+                            if (_createAccountState is SignUpLoadingState) {
+                              return const CircularInsideButtonWidget();
+                            } else {
+                              return const Text(
+                                'Create',
+                                style: TextStyle(color: AppColors.appBarTextColor),
+                              );
+                            }
+                          },
+                        ),
+                        ),
                       ),
                       SizedBox(height: 16.rSp,),
                       Row(
@@ -119,10 +133,11 @@ class CreateAccountScreen extends StatelessWidget {
                           SizedBox(width: 8.rSp,),
                           GestureDetector(
                               onTap: (){
-                                Navigator.pop(context);
+
                                 _addressTEController.clear();
                                 _passwordTEController.clear();
-                                context.read<PasswordVisibilityBloc>().add(PasswordVisibilityChangeEvent());
+                                Navigator.pop(context);
+                                // context.read<PasswordVisibilityBloc>().add(PasswordVisibilityChangeEvent());
                               },
                               child: const Text('Login',style: TextStyle(fontWeight: FontWeight.bold),)),
                         ],

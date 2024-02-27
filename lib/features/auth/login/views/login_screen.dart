@@ -3,10 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:temp_mail_app/common_bloc/password_visibility_bloc.dart';
 import 'package:temp_mail_app/common_bloc/password_visibility_event.dart';
 import 'package:temp_mail_app/common_widgets/body_header.dart';
+import 'package:temp_mail_app/common_widgets/circular_inside_button_widget.dart';
 import 'package:temp_mail_app/common_widgets/custom_appbar.dart';
 import 'package:temp_mail_app/constants/app_colors.dart';
+import 'package:temp_mail_app/constants/app_toast_message.dart';
 import 'package:temp_mail_app/constants/custom_size_extension.dart';
 import 'package:temp_mail_app/features/auth/create_account/views/create_account_screen.dart';
+import 'package:temp_mail_app/features/auth/login/bloc/login_bloc.dart';
+import 'package:temp_mail_app/features/auth/login/bloc/login_event.dart';
+import 'package:temp_mail_app/features/auth/login/bloc/login_state.dart';
+import 'package:temp_mail_app/features/home/views/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
    LoginScreen({Key? key, required this.domainName}) : super(key: key);
@@ -88,9 +94,30 @@ class LoginScreen extends StatelessWidget {
                           if(!_formKey.currentState!.validate()){
                             return;
                           }
+                          else{
+                            String name = _addressTEController.text.trim()+"@$domainName";
+                            context.read<LoginBloc>().add(UserLoginEvent(address: _addressTEController.text.trim()+"@$domainName", password: _passwordTEController.text.trim()));
+                            context.read<LoginBloc>().stream.listen((state) {
+                              if(state is UserLoginSuccessState){
+                                _addressTEController.clear();
+                                _passwordTEController.clear();
+                                AppToastMessage.successToast(text: state.successMessage);
+                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomeScreen(domainName: name,)), (route) => false);
+                                //Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen(domainName: name)));
+                              }else if(state is UserLoginFailedState){
+                                AppToastMessage.failedToast(text: state.errorMessage);
+                              }
+                            });
+                          }
 
-
-                        }, child: const Text('Login',style: TextStyle(color: AppColors.appBarTextColor),)),
+                        }, child: BlocBuilder<LoginBloc,LoginState>(
+                          builder: (context,_loginState) {
+                            if(_loginState is UserLoginLoadingState){
+                              return const CircularInsideButtonWidget();
+                            }
+                            return const Text('Login',style: TextStyle(color: AppColors.appBarTextColor),);
+                          }
+                        )),
                   ),
                   SizedBox(height: 16.rSp,),
                   Row(
@@ -103,7 +130,7 @@ class LoginScreen extends StatelessWidget {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateAccountScreen(domainName: domainName)));
                             _addressTEController.clear();
                             _passwordTEController.clear();
-                            context.read<PasswordVisibilityBloc>().add(PasswordVisibilityChangeEvent());
+                            // context.read<PasswordVisibilityBloc>().add(PasswordVisibilityChangeEvent());
                           },
                           child: const Text('Create',style: TextStyle(fontWeight: FontWeight.bold),)),
                     ],

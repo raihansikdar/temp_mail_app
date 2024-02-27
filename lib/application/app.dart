@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:temp_mail_app/constants/app_colors.dart';
 import 'package:temp_mail_app/constants/custom_size_extension.dart';
 import 'package:temp_mail_app/features/domain/views/domain_screen.dart';
+import 'package:temp_mail_app/features/splash_screen/views/splash_screen.dart';
 
 class TempMailApp extends StatelessWidget {
   const TempMailApp({super.key});
@@ -29,7 +30,7 @@ class TempMailApp extends StatelessWidget {
           hintStyle: TextStyle(color: Colors.grey.withOpacity(0.3))
         ),
       ),
-      home: const DomainScreen(),
+      home: const SplashScreen(),
     );
   }
 }
