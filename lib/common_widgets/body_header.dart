@@ -24,7 +24,7 @@ class BodyHeader extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.rSp,vertical: 16.rSp),
-            child: Text(headerText,style: const TextStyle(color: AppColors.appBarTextColor),textAlign: TextAlign.right,),
+            child: Text(headerText,style: TextStyle(color: AppColors.appBarTextColor,fontSize: 24.rSp,fontWeight: FontWeight.w600),textAlign: TextAlign.right,),
           ),
         ),
 

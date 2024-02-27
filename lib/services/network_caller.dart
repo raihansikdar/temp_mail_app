@@ -8,7 +8,7 @@ class NetworkCaller{
   ///----------------------------------->> get request method <<----------------------------------
   static Future<NetworkResponse> getRequest(String url) async{
     try{
-      Response response = await get(Uri.parse(url),headers: {'Content-Type': 'application/json','token': AuthUtility.accessToken.toString()});
+      Response response = await get(Uri.parse(url),headers: {'Content-Type': 'application/json','Authorization': 'Bearer ${AuthUtility.accessToken}'},);
 
       log("getRequest statusCode ==> ${response.statusCode}");
       log("getRequest body ==> ${response.body}");

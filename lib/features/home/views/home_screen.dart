@@ -18,14 +18,14 @@ class HomeScreen extends StatelessWidget {
       context.read<MessageBloc>().add(GetMessageData());
     });
     return Scaffold(
-      appBar: const CustomAppBar(leading: true, action: true,),
-      body: SingleChildScrollView(
-        child: BlocBuilder<MessageBloc, MessageState>(
-          builder: (context, _messageState) {
-            if (_messageState is MessageLoadingState) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (_messageState is MessageDataLoadedState) {
-              return Column(
+      appBar: const CustomAppBar(leading: false, action: true,),
+      body: BlocBuilder<MessageBloc, MessageState>(
+        builder: (context, _messageState) {
+          if (_messageState is MessageLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (_messageState is MessageDataLoadedState) {
+            return SingleChildScrollView(
+              child: Column(
                 children: [
                   BodyHeader(
                     headerText: _messageState.messageModel.hydraMember?.first.to?.first.address ?? '',
@@ -40,17 +40,27 @@ class HomeScreen extends StatelessWidget {
                         ListView.separated(
                           shrinkWrap: true,
                           primary: false,
-                          itemCount: 10,
+                          itemCount: _messageState.messageModel.hydraMember?.length ?? 0,
                           itemBuilder: (context, index) {
+                            var state = _messageState.messageModel.hydraMember?[index];
                             return Card(
                               child: Padding(
                                 padding: EdgeInsets.all(16.rSp),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Form", style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.appBarColors),),
-                                    Text("name", style: TextStyle(fontWeight: FontWeight.bold),),
-                                    Text("To", style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.appBarColors),),
+                                    const Text("Form", style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.appBarColors),),
+                                    Text("${state?.from?.name ?? ''} <${state?.from?.address}>", style: const TextStyle(fontWeight: FontWeight.w400),),
+                                    const Text("To", style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.appBarColors),),
+                                    Text("<${state?.to?[0].address ?? ''}>", style: const TextStyle(fontWeight: FontWeight.w400),),
+                                    const Text("Time", style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.appBarColors),),
+                                    Text(state?.createdAt ?? '', style: const TextStyle(fontWeight: FontWeight.w400),),
+                    
+                                    const Text("Subject", style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.appBarColors),),
+                                    Text(state?.subject ?? '', style: const TextStyle(fontWeight: FontWeight.w400),),
+                                    const Text("Details", style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.appBarColors),),
+                                    Text(state?.intro ?? '', style: const TextStyle(fontWeight: FontWeight.w400),),
+                    
                                   ],
                                 ),
                               ),
@@ -62,15 +72,15 @@ class HomeScreen extends StatelessWidget {
                     ),
                   )
                 ],
-              );
-            } else if (_messageState is MessageErrorState) {
-              return Center(child: Text(_messageState.errorMessage));
-            } else {
-
-              return Container();
-            }
-          },
-        ),
+              ),
+            );
+          } else if (_messageState is MessageErrorState) {
+            return Center(child: Text(_messageState.errorMessage));
+          } else {
+      
+            return Container();
+          }
+        },
       ),
     );
   }
