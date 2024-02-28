@@ -17,17 +17,14 @@ import 'package:temp_mail_app/features/home/views/home_screen.dart';
 class LoginScreen extends StatefulWidget {
    LoginScreen({Key? key, required this.domainName}) : super(key: key);
   final String domainName;
-
-  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _addressTEController = TextEditingController();
-
   final TextEditingController _passwordTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding:  EdgeInsets.all(16.rSp),
             child: Form(
-              key: LoginScreen._formKey,
+              key:_formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -101,30 +98,30 @@ class _LoginScreenState extends State<LoginScreen> {
                                 backgroundColor: AppColors.appBarColors
                             ),
                             onPressed: (){
-                              if(!LoginScreen._formKey.currentState!.validate()){
+                              if(!_formKey.currentState!.validate()){
                                 return;
                               }
                               else{
                                 String name = _addressTEController.text.trim()+"@${widget.domainName}";
                                 context.read<LoginBloc>().add(UserLoginEvent(address: _addressTEController.text.trim()+"@${widget.domainName}", password: _passwordTEController.text.trim()));
-                                // context.read<LoginBloc>().stream.listen((state) {
-                                //   if(state is UserLoginSuccessState){
-                                //     _addressTEController.clear();
-                                //     _passwordTEController.clear();
-                                //     AppToastMessage.successToast(text: state.successMessage);
-                                //     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomeScreen()), (route) => false);
-                                //   }else if(state is UserLoginFailedState){
-                                //     AppToastMessage.failedToast(text: state.errorMessage);
-                                //   }
-                                // });
-                                if(_loginState is UserLoginSuccessState){
-                                      _addressTEController.clear();
-                                      _passwordTEController.clear();
-                                      AppToastMessage.successToast(text: _loginState.successMessage);
-                                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomeScreen()), (route) => false);
-                                    }else if(_loginState is UserLoginFailedState){
-                                      AppToastMessage.failedToast(text: _loginState.errorMessage);
-                                    }
+                                context.read<LoginBloc>().stream.listen((state) {
+                                  if(state is UserLoginSuccessState){
+                                    _addressTEController.clear();
+                                    _passwordTEController.clear();
+                                    AppToastMessage.successToast(text: state.successMessage);
+                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomeScreen()), (route) => false);
+                                  }else if(state is UserLoginFailedState){
+                                    AppToastMessage.failedToast(text: state.errorMessage);
+                                  }
+                                });
+                                // if(_loginState is UserLoginSuccessState){
+                                //       _addressTEController.clear();
+                                //       _passwordTEController.clear();
+                                //       AppToastMessage.successToast(text: _loginState.successMessage);
+                                //       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomeScreen()), (route) => false);
+                                //     }else if(_loginState is UserLoginFailedState){
+                                //       AppToastMessage.failedToast(text: _loginState.errorMessage);
+                                //     }
                                 }
 
                             }, child: _loginState is UserLoginLoadingState ? CircularInsideButtonWidget() :

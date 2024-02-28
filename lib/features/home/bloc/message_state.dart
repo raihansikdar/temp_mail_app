@@ -24,7 +24,12 @@ class MessageDataLoadedState extends MessageState{
   List<Object?> get props => [messageModel];
 
 }
+class MessageEmptyState extends MessageState{
 
+  @override
+  List<Object?> get props => [];
+
+}
 class MessageErrorState extends MessageState{
   final String errorMessage;
   MessageErrorState({required this.errorMessage});

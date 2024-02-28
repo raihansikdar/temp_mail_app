@@ -17,9 +17,9 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent,CreateAccountState>{
 
      NetworkResponse response = await NetworkCaller.postRequest(Urls.createAccountUrl, body);
      if(response.isSuccess){
-       emit(const SignUpSuccessState(successMessage: 'Account Successfully Created'));
+       emit(const SignUpSuccessState(successMessage: 'Account Successfully Created.'));
      }else{
-       emit(const SignUpFailedState(errorMessage: 'Create Account Failed'));
+       emit(const SignUpFailedState(errorMessage: 'This address has been taken.'));
      }
     });
   }

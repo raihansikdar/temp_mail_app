@@ -17,17 +17,14 @@ class CreateAccountScreen extends StatefulWidget {
 
    final String domainName;
 
-  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   State<CreateAccountScreen> createState() => _CreateAccountScreenState();
 }
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _addressTEController = TextEditingController();
-
   final TextEditingController _passwordTEController = TextEditingController();
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +40,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           Padding(
             padding:  EdgeInsets.all(16.rSp),
             child: Form(
-              key: CreateAccountScreen._formKey,
+              key: _formKey,
               child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -100,16 +97,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                 backgroundColor: AppColors.appBarColors
                             ),
                             onPressed: (){
-                              if(!CreateAccountScreen._formKey.currentState!.validate()){
+                              if(!_formKey.currentState!.validate()){
                                 return;
                               }else{
                                 context.read<CreateAccountBloc>().add(SignUpEvent(address: _addressTEController.text.trim()+"@${widget.domainName}", password: _passwordTEController.text.trim()));
                                 context.read<CreateAccountBloc>().stream.listen((state) {
                                   if(state is SignUpSuccessState){
+                                    Navigator.pop(context);
                                     _addressTEController.clear();
                                     _passwordTEController.clear();
                                     AppToastMessage.successToast(text: state.successMessage);
-                                    Navigator.pop(context);
+                                   
                                   }else if(state is SignUpFailedState){
                                     AppToastMessage.failedToast(text: state.errorMessage);
                                   }
