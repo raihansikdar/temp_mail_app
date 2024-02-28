@@ -1,16 +1,35 @@
-# temp_mail_app
+# Temp_Mail_APP
 
-A new Flutter project.
+### Google Drive Link:
+- [Download Temp mail App](https://drive.google.com/file/d/1Q1W-fML-SZUrFy3O-E-zJLFKygwHo-4N/view?usp=sharing)
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Key Responsibilities
+As the creator of Temp mail App, I assumed the following core responsibilities:
 
-A few resources to get you started if this is your first Flutter project:
+- Fetch domain data from api
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Create account
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Login
+
+- Save access token
+
+- Fetch Message data from api
+
+## Used Packages
+- `flutter_bloc: ^8.1.4`
+- `equatable: ^2.0.5`
+- `http: ^1.2.0`
+- `fluttertoast: ^8.2.4`
+- `shared_preferences: ^2.2.2`
+
+## Video Player App UI
+<div style="display: flex; flex-wrap: wrap;">
+  <img src="https://github.com/raihansikdar/temp_mail_app/blob/main/screenshots/1.jpg" width="200" />
+  <img src="https://github.com/raihansikdar/temp_mail_app/blob/main/screenshots/2.jpg" width="200" />
+  <img src="https://github.com/raihansikdar/temp_mail_app/blob/main/screenshots/3.jpg" width="200" />
+  <img src="https://github.com/raihansikdar/temp_mail_app/blob/main/screenshots/4.jpg" width="200" />
+ <img src="https://github.com/raihansikdar/temp_mail_app/blob/main/screenshots/5.jpg" width="200" />
+
+</div>
