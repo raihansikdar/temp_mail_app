@@ -14,16 +14,24 @@ import 'package:temp_mail_app/features/auth/login/bloc/login_event.dart';
 import 'package:temp_mail_app/features/auth/login/bloc/login_state.dart';
 import 'package:temp_mail_app/features/home/views/home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
    LoginScreen({Key? key, required this.domainName}) : super(key: key);
   final String domainName;
 
+  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _addressTEController = TextEditingController();
+
   final TextEditingController _passwordTEController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    print('================rebuild==============');
     return Scaffold(
       backgroundColor: AppColors.bodyColors,
       appBar: const CustomAppBar(leading: true, action: false,),
@@ -36,7 +44,7 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding:  EdgeInsets.all(16.rSp),
             child: Form(
-              key: _formKey,
+              key: LoginScreen._formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -59,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 8.rSp,),
-                      Text("@$domainName",style: TextStyle(fontSize: 24.rSp,fontWeight: FontWeight.w500),),
+                      Text("@${widget.domainName}",style: TextStyle(fontSize: 24.rSp,fontWeight: FontWeight.w500),),
                     ],
                   ),
                   SizedBox(height: 16.rSp,),
@@ -86,37 +94,45 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: 32.rSp,),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.appBarColors
-                        ),
-                        onPressed: (){
-                          if(!_formKey.currentState!.validate()){
-                            return;
-                          }
-                          else{
-                            String name = _addressTEController.text.trim()+"@$domainName";
-                            context.read<LoginBloc>().add(UserLoginEvent(address: _addressTEController.text.trim()+"@$domainName", password: _passwordTEController.text.trim()));
-                            context.read<LoginBloc>().stream.listen((state) {
-                              if(state is UserLoginSuccessState){
-                                _addressTEController.clear();
-                                _passwordTEController.clear();
-                                AppToastMessage.successToast(text: state.successMessage);
-                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomeScreen()), (route) => false);
-                              }else if(state is UserLoginFailedState){
-                                AppToastMessage.failedToast(text: state.errorMessage);
+                    child: BlocBuilder<LoginBloc,LoginState>(
+                      builder: (context,_loginState) {
+                        return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.appBarColors
+                            ),
+                            onPressed: (){
+                              if(!LoginScreen._formKey.currentState!.validate()){
+                                return;
                               }
-                            });
-                          }
+                              else{
+                                String name = _addressTEController.text.trim()+"@${widget.domainName}";
+                                context.read<LoginBloc>().add(UserLoginEvent(address: _addressTEController.text.trim()+"@${widget.domainName}", password: _passwordTEController.text.trim()));
+                                // context.read<LoginBloc>().stream.listen((state) {
+                                //   if(state is UserLoginSuccessState){
+                                //     _addressTEController.clear();
+                                //     _passwordTEController.clear();
+                                //     AppToastMessage.successToast(text: state.successMessage);
+                                //     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomeScreen()), (route) => false);
+                                //   }else if(state is UserLoginFailedState){
+                                //     AppToastMessage.failedToast(text: state.errorMessage);
+                                //   }
+                                // });
+                                if(_loginState is UserLoginSuccessState){
+                                      _addressTEController.clear();
+                                      _passwordTEController.clear();
+                                      AppToastMessage.successToast(text: _loginState.successMessage);
+                                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const HomeScreen()), (route) => false);
+                                    }else if(_loginState is UserLoginFailedState){
+                                      AppToastMessage.failedToast(text: _loginState.errorMessage);
+                                    }
+                                }
 
-                        }, child: BlocBuilder<LoginBloc,LoginState>(
-                          builder: (context,_loginState) {
-                            if(_loginState is UserLoginLoadingState){
-                              return const CircularInsideButtonWidget();
-                            }
-                            return const Text('Login',style: TextStyle(color: AppColors.appBarTextColor),);
-                          }
-                        )),
+                            }, child: _loginState is UserLoginLoadingState ? CircularInsideButtonWidget() :
+                                const Text('Login',style: TextStyle(color: AppColors.appBarTextColor),),
+
+                        );
+                      }
+                    ),
                   ),
                   SizedBox(height: 16.rSp,),
                   Row(
@@ -126,7 +142,7 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(width: 8.rSp,),
                       GestureDetector(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateAccountScreen(domainName: domainName)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateAccountScreen(domainName: widget.domainName)));
                             _addressTEController.clear();
                             _passwordTEController.clear();
                           },
